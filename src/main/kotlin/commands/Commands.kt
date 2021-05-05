@@ -14,7 +14,7 @@ fun respondingCommands() = commands("Response") {
         execute(IntegerArg.makeOptional(5)) {
             var s = ""
             transaction(Connection.TRANSACTION_READ_UNCOMMITTED, 2) {
-                s = Users.selectAll().orderBy(Users.messages).limit(args.first).toList()
+                s = Users.selectAll().orderBy(Users.messages).limit(args.first).toList().sortedBy { it[Users.messages] }
                     .joinToString("\n", "The ${args.first} most invisible users are:\n") {
                         "<@${it[Users.userID]}>: ${it[Users.messages]}"
                     }
